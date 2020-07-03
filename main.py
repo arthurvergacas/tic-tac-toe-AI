@@ -1,12 +1,14 @@
 import pygame
 from cell import Cell
 from gameManager import GameManager
+from ai import Ai
 
 class MainGUI:
     def __init__ (self):
         pygame.init()
 
         self.manager = GameManager()
+        
 
         pygame.display.set_caption("Tic Tac Toe")
 
@@ -29,6 +31,8 @@ class MainGUI:
             for j in range(3):
                 self.board.append(Cell(self.cellWidth * i, self.cellHeight * j, self.cellWidth, self.cellHeight))
         
+
+        self.enemy = Ai(self.board)
 
 
         self.running = True
@@ -66,13 +70,23 @@ class MainGUI:
                     for cell in self.board:
                         if self.manager.currentPlayer == 'X' and cell.checkUserCLicked(pygame.mouse.get_pos()) and cell.state == '':
                             cell.changeState('X') # cause the O player is the AI
-                            print("X")
-                            # self.manager.changeTurn()
-                            
-
+                            self.manager.changeTurn()
+                                        
+            
             # to check if there's a win
             if self.manager.checkWin(self.board):
+                self.manager.currentPlayer = 'over'
                 print("Game Won")
+            
+            # to check if there's a tie
+            if self.manager.checkTie(self.board):
+                self.manager.currentPlayer = 'over'
+                print('tie')
+            
+            # check if it's AI turn
+            if self.manager.currentPlayer == 'O':
+                self.enemy.play()
+                self.manager.changeTurn()
             
             
 

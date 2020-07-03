@@ -2,6 +2,8 @@ class GameManager:
     def __init__(self):
         self.currentPlayer = 'X' # can be either X's turn or O's turn
                                  # X goes first cause yes
+                                 # can also be 'over', which means that the game is over 
+        
 
     def changeTurn(self):
         if self.currentPlayer == 'X':
@@ -9,21 +11,21 @@ class GameManager:
         else:
             self.currentPlayer = 'X'
     
-    def checkWin(self, grid):
+    def checkWin(self, board):
         # dumb method to check if there's a win can't think sorry ;-;
 
         won = False
 
-        rowTop = [grid[0], grid[3], grid[6]]
-        rowMid = [grid[1], grid[4], grid[7]]
-        rowBot = [grid[2], grid[5], grid[8]]
+        rowTop = [board[0], board[3], board[6]]
+        rowMid = [board[1], board[4], board[7]]
+        rowBot = [board[2], board[5], board[8]]
 
-        columnLeft = [grid[0], grid[1], grid[2]]
-        columnMid = [grid[3], grid[4], grid[5]]
-        columnRight = [grid[6], grid[7], grid[8]]
+        columnLeft = [board[0], board[1], board[2]]
+        columnMid = [board[3], board[4], board[5]]
+        columnRight = [board[6], board[7], board[8]]
 
-        leftToRightDiag = [grid[0], grid[4], grid[8]]
-        rightToLeftDiag = [grid[6], grid[4], grid[2]]
+        leftToRightDiag = [board[0], board[4], board[8]]
+        rightToLeftDiag = [board[6], board[4], board[2]]
 
         allGames = [rowTop, rowMid, rowBot, 
                 columnLeft, columnMid, columnRight, 
@@ -36,6 +38,15 @@ class GameManager:
 
         
         return won
+    
+    def checkTie(self, board):
+        
+        for cell in board:
+            if cell.state == '':
+                return False
+        
+        return True
+        
                 
 
 
