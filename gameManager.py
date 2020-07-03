@@ -1,17 +1,20 @@
 class GameManager:
     def __init__(self):
-        self.currentPlayer = 'X' # can be either X's turn or O's turn
-                                 # X goes first cause yes
-                                 # can also be 'over', which means that the game is over 
-        
+        self.currentPlayer = 'X'
+        # can be either X's turn or O's turn
+        # X goes first cause yes
+        # can also be 'over', which means that the game is over
 
     def changeTurn(self):
+        # to change turn faster
+        # basically the function is here so i dont accidentally screw over my logic
+
         if self.currentPlayer == 'X':
             self.currentPlayer = 'O'
         else:
             self.currentPlayer = 'X'
-    
-    def checkWin(self, board):
+
+    def checkWin(self, board, returnWinner=False):
         # dumb method to check if there's a win can't think sorry ;-;
 
         won = False
@@ -27,28 +30,22 @@ class GameManager:
         leftToRightDiag = [board[0], board[4], board[8]]
         rightToLeftDiag = [board[6], board[4], board[2]]
 
-        allGames = [rowTop, rowMid, rowBot, 
-                columnLeft, columnMid, columnRight, 
-                leftToRightDiag, rightToLeftDiag]
-            
+        allGames = [rowTop, rowMid, rowBot,
+                    columnLeft, columnMid, columnRight,
+                    leftToRightDiag, rightToLeftDiag]
+
         for game in allGames:
             if game[0].state == game[1].state and game[0].state == game[2].state and game[0].state != '':
                 won = True
-                break
+                if returnWinner:
+                    return game[0].state
+                else:
+                    return won
 
-        
-        return won
-    
     def checkTie(self, board):
-        
+
         for cell in board:
             if cell.state == '':
                 return False
-        
+
         return True
-        
-                
-
-
-        
-
