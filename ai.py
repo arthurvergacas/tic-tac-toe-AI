@@ -21,7 +21,8 @@ class Ai:
             elif self.manager.checkTie(board):
                 return 0
             else:
-                return True
+                # depth not working properly
+                return 0
 
         if OPlayer:
             maxValue = float('-inf')
@@ -63,16 +64,11 @@ class Ai:
             if cell.state == '':
                 cell.state = 'O'
                 score = self.minimax(board, False, float(
-                    '-inf'), float('inf'), depth=1)
+                    '-inf'), float('inf'), depth=2)
                 cell.state = ''
 
-                if isinstance(score, bool) == False:
-                    if score > bestScore:
-                        bestScore = score
-                        bestCell = cell
-                else:
-                    bestCell = random.choice(board)
-                    while bestCell.state != '':
-                        bestCell = random.choice(board)
+                if score > bestScore:
+                    bestScore = score
+                    bestCell = cell
 
         bestCell.changeState('O')

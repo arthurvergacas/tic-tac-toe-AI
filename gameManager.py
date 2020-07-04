@@ -3,7 +3,18 @@ class GameManager:
         self.currentPlayer = 'X'
         # can be either X's turn or O's turn
         # X goes first cause yes
-        # can also be 'over', which means that the game is over
+        # can also be '', which means that the game is over
+
+        self.gameState = ''
+        # game state can be:
+        # progress - the game is in progress
+        # over - the game ended
+
+        self.result = ''
+        # the result of the game can be:
+        # X - X won
+        # O - O won
+        # tie - no winners
 
     def changeTurn(self):
         # to change turn faster
