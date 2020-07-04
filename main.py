@@ -20,8 +20,12 @@ class MainGUI:
         self.background = pygame.Surface((self.WIDTH, self.HEIGHT))
         self.background.fill(pygame.Color('#E3E3E3'))
 
+        # FONTS
         self.playerFont = pygame.font.SysFont('arial', 70)
+        self.resultFont = pygame.font.SysFont('arial', 60, bold=True)
+        self.infoFont = pygame.font.SysFont('arial', 30, italic=True)
 
+        # define cell dimensions
         self.cellWidth = self.WIDTH / 3
         self.cellHeight = self.HEIGHT / 3
         self.board = []
@@ -59,6 +63,36 @@ class MainGUI:
             x, y = self.playerFont.size(cell.state)
             self.screen.blit(
                 player, (int((cell.x + cell.w / 2) - x / 2), int((cell.y + cell.h / 2) - y / 2)))
+
+    def endGameMsg(self, result):
+        # rectangle that the message will be drawn
+        w = self.WIDTH
+        h = 150
+        x = 0
+        y = int(self.HEIGHT / 2 - h / 2)
+
+        pygame.draw.rect(self.screen, pygame.Color(
+            '#4D4D4D'), pygame.Rect(x, y, w, h))
+
+        # result text
+        if self.manager.result == 'tie':
+            resultText = "It's a tie!"
+            result = self.resultFont.render(resultText, True, (0, 0, 0))
+        else:
+            resultText = f"{self.manager.result} won!"
+            result = self.resultFont.render(resultText, True, (0, 0, 0))
+
+        x, y_txt = self.resultFont.size(resultText)
+
+        self.screen.blit(result, (int(w / 2 - x / 2), int(y + 5)))
+
+        # info text
+        infoText = "Press R to restart the game!"
+        info = self.infoFont.render(infoText, True, (0, 0, 0))
+
+        x, y_txt = self.infoFont.size(infoText)
+
+        self.screen.blit(info, (int(w / 2 - x / 2), int(y + 100)))
 
     def run(self):
         while self.running:
@@ -105,6 +139,8 @@ class MainGUI:
                 self.manager.changeTurn()
 
             # UI
+            self.screen.blit(self.background, (0, 0))
+
             if self.manager.gameState == 'over':
                 # if tie, paint te background gray
                 if self.manager.result == 'tie':
@@ -115,10 +151,10 @@ class MainGUI:
                     self.background.fill(pygame.Color('#F53920'))
 
                 self.displayGrids()
+                self.endGameMsg(self.manager.result)
 
-            self.screen.blit(self.background, (0, 0))
-
-            self.displayGrids()
+            if self.manager.gameState != 'over':
+                self.displayGrids()
 
             pygame.display.update()
 

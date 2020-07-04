@@ -64,7 +64,7 @@ class Ai:
             if cell.state == '':
                 cell.state = 'O'
                 score = self.minimax(board, False, float(
-                    '-inf'), float('inf'), depth=2)
+                    '-inf'), float('inf'))
                 cell.state = ''
 
                 if score > bestScore:
