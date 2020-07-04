@@ -1,3 +1,4 @@
+import random
 from gameManager import GameManager
 
 
@@ -5,7 +6,6 @@ class Ai:
     def __init__(self):
 
         self.manager = GameManager()
-        self.counter = 0
 
     def minimax(self, board, OPlayer, alpha, beta, depth=float('inf')):
         # return the static evaluation of the final possible game
@@ -13,7 +13,6 @@ class Ai:
         # O wins: +1
         # tie: 0
 
-        self.counter += 1
         if depth == 0 or self.manager.checkWin(board) or self.manager.checkTie(board):
             if self.manager.checkWin(board, True) == 'X':
                 return -1
@@ -22,7 +21,7 @@ class Ai:
             elif self.manager.checkTie(board):
                 return 0
             else:
-                return 0
+                return True
 
         if OPlayer:
             maxValue = float('-inf')
@@ -63,12 +62,17 @@ class Ai:
         for cell in board:
             if cell.state == '':
                 cell.state = 'O'
-                score = self.minimax(board, False, float('-inf'), float('inf'))
+                score = self.minimax(board, False, float(
+                    '-inf'), float('inf'), depth=1)
                 cell.state = ''
 
-                if score > bestScore:
-                    bestScore = score
-                    bestCell = cell
-        print(self.counter)
+                if isinstance(score, bool) == False:
+                    if score > bestScore:
+                        bestScore = score
+                        bestCell = cell
+                else:
+                    bestCell = random.choice(board)
+                    while bestCell.state != '':
+                        bestCell = random.choice(board)
 
         bestCell.changeState('O')
