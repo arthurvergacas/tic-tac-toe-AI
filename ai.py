@@ -13,6 +13,9 @@ class Ai:
         # O wins: +1
         # tie: 0
 
+        choiceBoard = board[:]
+        random.shuffle(choiceBoard)
+
         if depth == 0 or self.manager.checkWin(board) or self.manager.checkTie(board):
             if self.manager.checkWin(board, True) == 'X':
                 return -1
@@ -26,7 +29,7 @@ class Ai:
 
         if OPlayer:
             maxValue = float('-inf')
-            for cell in board:
+            for cell in choiceBoard:
                 if cell.state == '':
                     cell.state = 'O'
                     value = self.minimax(
@@ -41,7 +44,7 @@ class Ai:
 
         if OPlayer == False:
             minValue = float('inf')
-            for cell in board:
+            for cell in choiceBoard:
                 if cell.state == '':
                     cell.state = 'X'
                     value = self.minimax(
@@ -56,15 +59,19 @@ class Ai:
     def play(self, board):
         # choose a cell to play
 
+        # shuffle board to organic choice
+        choiceBoard = board[:]
+        random.shuffle(choiceBoard)
+
         # initializing move to store the best cell to move
         bestCell = None
         bestScore = float('-inf')
 
-        for cell in board:
+        for cell in choiceBoard:
             if cell.state == '':
                 cell.state = 'O'
                 score = self.minimax(board, False, float(
-                    '-inf'), float('inf'))
+                    '-inf'), float('inf'), depth=1)
                 cell.state = ''
 
                 if score > bestScore:
